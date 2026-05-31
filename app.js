@@ -4,14 +4,13 @@
 
 // --- Firebase Config (ユーザー設定エリア) ---
 const firebaseConfig = {
-  apiKey: "AIzaSyCILp9Mz5-AUKfR_b42SCjv9pkO93kUC08",
-  authDomain: "reversi-premium.firebaseapp.com",
-  databaseURL: "https://reversi-premium-default-rtdb.firebaseio.com",
-  projectId: "reversi-premium",
-  storageBucket: "reversi-premium.firebasestorage.app",
-  messagingSenderId: "328739106410",
-  appId: "1:328739106410:web:610c1af903d6e27eb4e413",
-  measurementId: "G-B0VLLZTBGV"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "gomoku-premium.firebaseapp.com",
+  databaseURL: "https://gomoku-premium-default-rtdb.firebaseio.com",
+  projectId: "gomoku-premium",
+  storageBucket: "gomoku-premium.firebasestorage.app",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
 // --- Constants ---

@@ -1,6 +1,6 @@
 # Firebase Realtime Database セットアップ手順
 
-Reversi Premiumでオンライン対戦機能を利用するには、無料のGoogle Firebaseアカウントを作成し、データベースを設定する必要があります。
+Gomoku Premiumでオンライン対戦機能を利用するには、無料のGoogle Firebaseアカウントを作成し、データベースを設定する必要があります。
 以下の手順に沿って設定を行ってください。
 
 ---
@@ -9,7 +9,7 @@ Reversi Premiumでオンライン対戦機能を利用するには、無料のGo
 
 1. [Firebase Console](https://console.firebase.google.com/) にアクセスし、Googleアカウントでログインします。
 2. 「**プロジェクトを追加**」（または「プロジェクトを作成」）をクリックします。
-3. プロジェクト名（例: `reversi-premium`）を入力し、規約に同意して「続行」を押します。
+3. プロジェクト名（例: `gomoku-premium`）を入力し、規約に同意して「続行」を押します。
 4. Google アナリティクスの設定画面が表示されますが、このアプリでは不要なため「**このプロジェクトで Google アナリティクスを無効にする**」にチェックするか、無効化して「**プロジェクトを作成**」をクリックします。
 5. 作成完了画面が表示されたら「続行」をクリックします。
 
@@ -43,7 +43,7 @@ Reversi Premiumでオンライン対戦機能を利用するには、無料のGo
 
 1. Firebaseコンソールの左メニュー上部にある「**プロジェクトの概要**」の横の「歯車マーク」をクリックし、「**プロジェクトの設定**」を選択します。
 2. 下部にある「マイアプリ」セクションで、**ウェブ（ `</>` アイコン）** をクリックします。
-3. アプリのニックネーム（例: `reversi-web`）を入力します。※「このアプリの Firebase Hosting も設定します」は**チェック不要**です。
+3. アプリのニックネーム（例: `gomoku-web`）を入力します。※「このアプリの Firebase Hosting も設定します」は**チェック不要**です。
 4. 「**アプリを登録**」をクリックします。
 5. 画面に設定用のコード（SDKの追加）が表示されます。その中にある `firebaseConfig` オブジェクトをコピーします。
 
@@ -51,10 +51,10 @@ Reversi Premiumでオンライン対戦機能を利用するには、無料のGo
 // コピーする対象の例：
 const firebaseConfig = {
   apiKey: "AIzaSy...",
-  authDomain: "reversi-premium.firebaseapp.com",
-  databaseURL: "https://reversi-premium-default-rtdb.firebaseio.com",
-  projectId: "reversi-premium",
-  storageBucket: "reversi-premium.appspot.com",
+  authDomain: "gomoku-premium.firebaseapp.com",
+  databaseURL: "https://gomoku-premium-default-rtdb.firebaseio.com",
+  projectId: "gomoku-premium",
+  storageBucket: "gomoku-premium.appspot.com",
   messagingSenderId: "...",
   appId: "..."
 };
