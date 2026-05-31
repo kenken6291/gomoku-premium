@@ -4,13 +4,13 @@
 
 // --- Firebase Config (ユーザー設定エリア) ---
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
+  apiKey: "REMOVED_API_KEY",
   authDomain: "gomoku-premium.firebaseapp.com",
   databaseURL: "https://gomoku-premium-default-rtdb.firebaseio.com",
   projectId: "gomoku-premium",
   storageBucket: "gomoku-premium.firebasestorage.app",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  messagingSenderId: "921356871686",
+  appId: "1:921356871686:web:78c991310a986f1eed7b87"
 };
 
 // --- Constants ---
