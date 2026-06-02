@@ -109,6 +109,10 @@ let replayMode = false;
 let replayIndex = -1;
 let replayTimer = null;
 
+// スマホ操作補助用（2タップシステム・タッチデバイス判定）
+const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia("(pointer: coarse)").matches;
+let selectedCell = null; // 現在仮選択されているセル {r, c}
+
 // Firebase Online Multiplayer States
 let database = null;
 let roomRef = null;
@@ -195,6 +199,15 @@ document.addEventListener('DOMContentLoaded', () => {
     loadStats();
     setupEventListeners();
     applyTheme(selectTheme.value);
+    
+    // モバイル端末ではデフォルトで設定パネルを閉じる
+    if (window.innerWidth <= 768) {
+        const controlPanel = document.querySelector('.control-panel');
+        if (controlPanel) {
+            controlPanel.classList.add('collapsed');
+        }
+    }
+    
     resetGame();
 });
 
@@ -384,6 +397,19 @@ function setupEventListeners() {
     btnCopyRoom.addEventListener('click', copyRoomIdToClipboard);
     btnCancelRoom.addEventListener('click', cleanUpOnlineRoom);
     btnLeaveRoom.addEventListener('click', cleanUpOnlineRoom);
+    
+    // 設定パネルの表示トグル（スマホ向けアコーディオン）
+    const btnToggleSettings = document.getElementById('btn-toggle-settings');
+    if (btnToggleSettings) {
+        btnToggleSettings.addEventListener('click', () => {
+            const controlPanel = document.querySelector('.control-panel');
+            if (controlPanel) {
+                controlPanel.classList.toggle('collapsed');
+                const isCollapsed = controlPanel.classList.contains('collapsed');
+                btnToggleSettings.querySelector('span').textContent = isCollapsed ? '設定を表示' : '設定を非表示';
+            }
+        });
+    }
 }
 
 function applyTheme(themeName) {
@@ -431,6 +457,18 @@ function resetGame() {
     replayMode = false;
     replayIndex = -1;
     clearInterval(replayTimer);
+    
+    selectedCell = null;
+    
+    // ゲーム開始時はモバイルで設定パネルを自動で閉じる
+    if (window.innerWidth <= 768) {
+        const controlPanel = document.querySelector('.control-panel');
+        const btnToggle = document.getElementById('btn-toggle-settings');
+        if (controlPanel && !controlPanel.classList.contains('collapsed')) {
+            controlPanel.classList.add('collapsed');
+            if (btnToggle) btnToggle.querySelector('span').textContent = '設定を表示';
+        }
+    }
     
     btnUndo.disabled = true;
     replayPanel.classList.add('hidden');
@@ -545,8 +583,14 @@ function renderBoard() {
                 const isOnlineTurnLocked = gameMode === 'online' && (!isOnlineActive || turn !== myRole);
                 
                 if (!isAiTurn && !isOnlineTurnLocked) {
-                    cell.classList.add('hint');
-                    cell.classList.add(turn === BLACK ? 'player-black-turn' : 'player-white-turn');
+                    // 2タップシステムで現在選択されているセルの場合
+                    if (selectedCell && selectedCell.r === r && selectedCell.c === c) {
+                        cell.classList.add('selected-temp');
+                        cell.classList.add(turn === BLACK ? 'player-black-turn' : 'player-white-turn');
+                    } else {
+                        cell.classList.add('hint');
+                        cell.classList.add(turn === BLACK ? 'player-black-turn' : 'player-white-turn');
+                    }
                     cell.addEventListener('click', () => handleCellClick(r, c));
                 }
             }
@@ -607,6 +651,17 @@ function handleCellClick(row, col) {
         if (turn !== myRole) return;
     }
     
+    // スマホ/タッチ操作時の誤操作防止（2タップ着手確定システム）
+    if (isTouchDevice) {
+        if (!selectedCell || selectedCell.r !== row || selectedCell.c !== col) {
+            selectedCell = { r: row, c: col };
+            renderBoard();
+            return;
+        }
+        // 2回目のタップで確定
+        selectedCell = null;
+    }
+    
     executeMove(row, col);
 }
 
@@ -661,6 +716,7 @@ function executeMove(row, col, isFromOnlineSync = false) {
 function advanceTurn() {
     if (!gameActive) return;
     
+    selectedCell = null;
     turn = turn === BLACK ? WHITE : BLACK;
     renderBoard();
     updateUI();
@@ -742,6 +798,7 @@ function restoreState(state) {
     timerBlack = state.timerBlack;
     timerWhite = state.timerWhite;
     gameActive = state.gameActive;
+    selectedCell = null;
     
     updateTimerDOM(timerBlackEl, timerBlack);
     updateTimerDOM(timerWhiteEl, timerWhite);
