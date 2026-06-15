@@ -2,7 +2,6 @@
  * Gomoku Premium - Game Logic & UI Orchestrator
  */
 
-// --- Firebase Config (ユーザー設定エリア) ---
 const firebaseConfig = {
   apiKey: "REMOVED_API_KEY",
   authDomain: "gomoku-premium.firebaseapp.com",
